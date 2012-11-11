@@ -24,6 +24,13 @@ void QATModem::setVCID(unsigned char vcid) {
     m_vcid = vcid;
 }
 
+void QATModem::setGCI(QString gci) {
+    if (gci.isEmpty())
+        return;
+    write(QByteArray("AT+GCI=").append(gci).append('\r').append('\n'));
+    m_gci = gci;
+}
+
 void QATModem::onDataAvailable()
 {
     if (bytesAvailable() > 0) {
@@ -39,6 +46,7 @@ void QATModem::onDataAvailable()
 void QATModem::onInitializeOK()
 {
     disconnect(SIGNAL(OK()), this, SLOT(onInitializeOK()));
+    setGCI(m_gci);
     setVCID(m_vcid);
 }
 

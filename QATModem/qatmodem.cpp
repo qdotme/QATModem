@@ -63,8 +63,12 @@ void QATModem::parseRING(QByteArray data) {
 void QATModem::parseVCID(QByteArray data) {
     int nmbr, nmbre;
     nmbr  = data.indexOf("NMBR=");
-    if (nmbr < 0)
-        return;
+    if (nmbr < 0) {
+        nmbr  = data.indexOf("NMBR = ");
+        if (nmbr < 0)
+            return;
+        nmbr += 2;
+    }
     nmbr += 5;
     nmbre = data.indexOf("\r\n", nmbr);
     if (nmbre < 0)

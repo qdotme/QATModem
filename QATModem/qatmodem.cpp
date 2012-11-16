@@ -12,6 +12,7 @@ QATModem::QATModem(const QString &name) : QextSerialPort(name)
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onDataAvailable()));
     timer->start(100);
+    m_reinitialise = false;
 }
 
 void QATModem::initialize() {
@@ -78,5 +79,6 @@ void QATModem::parseVCID(QByteArray data) {
     QString n = data.mid(nmbr, nmbre-nmbr);
     qDebug() << "Extracted #" << n;
     emit VCIDNMBR(n);
-    QTimer::singleShot(2000, this, SLOT(initialize()));
+    if (m_reinitialise)
+        QTimer::singleShot(2000, this, SLOT(initialize()));
 }

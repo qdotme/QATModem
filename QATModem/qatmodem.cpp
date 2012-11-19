@@ -36,7 +36,7 @@ void QATModem::onDataAvailable()
 {
     if (bytesAvailable() > 0) {
         QByteArray data = readAll();
-        qDebug() << data;
+        qDebug() << __PRETTY_FUNCTION__ << data.toPercentEncoding();
         parseOK(data);
         parseRING(data);
         if (m_vcid == 1)
@@ -77,7 +77,7 @@ void QATModem::parseVCID(QByteArray data) {
     if (nmbre - nmbr == 0)
         return;
     QString n = data.mid(nmbr, nmbre-nmbr);
-    qDebug() << "Extracted #" << n;
+    qDebug() << __PRETTY_FUNCTION__ << "Extracted #" << n;
     emit VCIDNMBR(n);
     if (m_reinitialise)
         QTimer::singleShot(2000, this, SLOT(initialize()));
